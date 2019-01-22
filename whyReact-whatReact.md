@@ -1,5 +1,5 @@
 
-<body style="font-size:10px">
+<body style="font-size:7px">
 리액트란 무엇일까?<br>
 내가 리액트를 선택한 이유는 단순했다.<br>
 어렵지만 어렵기 때문에 배워두면 그것 또한 전문성이 될거라는 점.<br>
@@ -30,7 +30,7 @@ UI의 재사용을 가능하게하고 또한 독립적인 단위로 쪼개어 �
 화면에 컴포넌트를 보여주고(Mounting), 갱신하고(Updating), 지워야하는(Unmouting) 과정은 UI를 구성하게 되고<br>
 컴포넌트는 각 과정이 진행될 때 Lifecycle함수를 실행한다.<br>
 개발자가 이 것을 재정의하여 컴포넌트를 제어하니 Lifecycle함수를 완벽히 이해해야한다.<br>
-[link](https://twitter.com/sstur_/status/970706983060848640)<br>
+[참고트윗](https://twitter.com/sstur_/status/970706983060848640)<br>
 <br>
 컴포넌트의 두가지 인스턴스 속성은 props와 state이다.<br>
 props는 변경이 불가능하고, state는 변경이 가능하다 정도만 알고있었는데<br>
