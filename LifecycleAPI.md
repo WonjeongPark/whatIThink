@@ -8,27 +8,23 @@ componentWillMount, componentWillUpdate, componentWillReceiveProps라는 Lifecyc
 ![ExampleImage2](https://github.com/WonjeongPark/whatIThink/blob/a2f558053e5a4061cf5a0117d613beecd37dd4f5/Lifecycle.jpeg?raw=true)
 <br><br>
 # Mount
-Mounting된다는 것은 컴포넌트가 처음 실행된다는 것과 같은 뜻으로 이해하면 쉽다.<br>
+_Mounting된다는 것은 컴포넌트가 처음 실행된다는 것과 같은 뜻으로 이해하면 쉽다._<br>
 Mount의 과정에는 componentWillMount, componentDidMount 두 가지의 Lifecycle API가 실행된다.<br>
-컴포넌트가 실행되는 과정은<br>
-컴포넌트 시작 -> context, defaultProps, state저장 -> componentWillMount 호출 -><br>
-**(render->)Mount -> componentDidMount호출<br>
-정도로 생각하면 된다.<br>**
-> Mounting되기 전의 componentWillMount 부분에서는<br>
-> render하기 전이기 때문에 DOM에 접근할 수 없고, props나 state에 변화를 주면 안된다.<br>
-> Mounting 후의 componentDidMount에서는 DOM에 접근이 가능하고 따라서 AJAX를 요청하거나 변화를 줄 수 있다.<br>
+>컴포넌트가 실행되는 과정은<br>컴포넌트 시작 -context, defaultProps, state저장 -componentWillMount 호출 -(render->)Mount -componentDidMount호출로 생각하면 된다.<br>
+- Mounting되기 전의 componentWillMount 부분에서는<br>
+- render하기 전이기 때문에 DOM에 접근할 수 없고, props나 state에 변화를 주면 안된다.<br>
+- Mounting 후의 componentDidMount에서는 DOM에 접근이 가능하고 따라서 AJAX를 요청하거나 변화를 줄 수 있다.<br>
 
 1. **componentWillMount**<br>
 componentWillMount는 Mounting되기 직전, 즉 화면에 나가기 직전에 호출된다.<br>
 앞서 말한 것 처럼, 이 API는 더이상 사용하지 않기 때문에 자세히 알아보지 않을 것이다.<br>
+더이상 사용하지 않는 API이고,<br>
 componentWillMount에서 하던 일들은 아래의 componentDidMount에서 처리 가능하다.<br>
-
 2. **componentDidMount**<br>
-Called immediately after a compoment is mounted.
+Called immediately after a compoment is mounted.<br>
 Setting state here will trigger re-rendering.<br>
 componentDidMount는 컴포넌트가 mounting된 직후 호출되는 API이다.<br>
 즉 화면에 나타나게 되었을 때 호출 되는 것이다.<br>
-
 ex>
 ```
 componentDidMount(){
@@ -40,20 +36,23 @@ componentDidMount(){
   }
   ```
 <br>
-# Props Updating<br>
-Updating이 발생하면 이를 감지하는 과정에서 componentWillReceiveProps API가 실행된다.
-(작성중)
 
-<br>
-**componentWillReceiveProps**<br>
-- Called when the component may be receiving new props.<br>
-React may call this even if porps have not changed,<br>
+# Props Updating와 State Updating<br><br>
+**Props Updating**<br>
+Updating이 발생하면 이를 감지하는 과정에서 componentWillReceiveProps API가 실행된다.<br>
+이 후에는 shouldComponentUpdate, componentWillUpdate 순서로 호출되고 업데이트가 완료되면(->render)<br>
+componentDidUpdate가 호출된다.<br>
+> Update 발생 >componentWillReceiveProps >shouldComponentUpdate >componentWillUpdate >componentDidUpdate<br>
+
+- 업데이트 완료를 기준으로 업데이트 전의 API들은 바뀔 Props,<br> 후의 API는 바뀌기 전의 Props를 가지고 있다.<br>
+
+1. **componentWillReceiveProps**<br>
+Called when the component may be **receiving new props**. React may call this even if porps have not changed,<br>
 so be sure to compare new and exising props if you only want to handle changes.<br>
-Calling 'component#setState generally does not trigger this method.<br>
+Calling component#setState generally does not trigger this method.<br>
 componentWillReceiveProps는 새로운 props를 받게 되는 경우<br>
 현재의 props와 새로운 props가 있어서 변화하는 부분을 알 수 있다.<br>
 _새로운 props를 받기 전의 props가 this.props이고,_ 새로 받게 될 props는 nextProps이다.<br>
-따라서 _업데이트 되기 전의 API가 조회_될 것이다._<br>
 ex><br>
 ```
 componentWillReceiveProps(nextProps){
@@ -64,4 +63,13 @@ console.log('next: ', nextProps.selectedEvent);
 <br>
 이 경우 브라우저에서 버튼을 클릭하면 현재의 이벤트와 다음에 나올 이벤트를 콘솔창에서 확인할 수 있다.<br>
 ![ExampleImage1](https://github.com/WonjeongPark/whatIThink/blob/c06e409d811f0776acefdd56d860bda1c3ca6ef7/20190122_1.png?raw=true)<br>
+<br>
 
+2. **shouldComponentUpdate**<br>
+앞서 포스팅된 'whyReact-whatReact.md'에서 언급 했듯이,<br>
+react는 Virtual DOM에 렌더링 해주는 과정을 통해 변화가 발생한 부분만 업데이트가 가능하다<br>
+변화가 없다면, DOM이 아닌 Virtual DOM에만 그저 렌더링하면 된다.<br>
+하지만 이 조차도 무수히 많은 처리를 하게 된다면 낭비라 할 수있다.<br>
+여기서 shouldComponentUpdate API가 사용된다.<br>
+아직 렌더링 되기 전에 실행되는 shouldComponentUpdate에서 true가 아니라<br>
+false를 return한다면 렌더링을 취소 할 수 있고 쓸데 없는 update를 방지할 수 있다.<br>
