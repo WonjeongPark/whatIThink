@@ -10,32 +10,29 @@ componentWillMount, componentWillUpdate, componentWillReceiveProps라는 Lifecyc
 # Mount
 _Mounting된다는 것은 컴포넌트가 처음 실행된다는 것과 같은 뜻으로 이해하면 쉽다._<br>
 Mount의 과정에는 componentWillMount, componentDidMount 두 가지의 Lifecycle API가 실행된다.<br>
->컴포넌트가 실행되는 과정은<br>컴포넌트 시작 -context, defaultProps, state저장 -componentWillMount 호출 -(render->)Mount -componentDidMount호출로 생각하면 된다.<br>
-- Mounting되기 전의 componentWillMount 부분에서는<br>
-- render하기 전이기 때문에 DOM에 접근할 수 없고, props나 state에 변화를 주면 안된다.<br>
-- Mounting 후의 componentDidMount에서는 DOM에 접근이 가능하고 따라서 AJAX를 요청하거나 변화를 줄 수 있다.<br>
+물론 앞서 컴포넌트가 새로 만들어 질 때 마다 호출되는 컴포넌트 생성자 함수 constructor가 존재한다.<br>
+```
+constructor(props){
+  super(props);
+  }
+```
 
-1. **componentWillMount**<br>
+>컴포넌트가 실행되는 과정은<br>컴포넌트 시작 -context, defaultProps, state저장 -componentWillMount 호출 -(render->)Mount -componentDidMount호출로 생각하면 된다.<br>
+- componentWillMount는 render전이기 때문에 DOM에 접근할 수 없고, props, state에 변화를 주면 안된다.<br>
+- Mounting후의 componentDidMount에서는 DOM에 접근이 가능하고 따라서 AJAX를 요청하거나 변화를 줄 수 있다.<br>
+
+1. componentWillMount -**deprecated**<br>
 componentWillMount는 Mounting되기 직전, 즉 화면에 나가기 직전에 호출된다.<br>
 앞서 말한 것 처럼, 이 API는 더이상 사용하지 않기 때문에 자세히 알아보지 않을 것이다.<br>
-더이상 사용하지 않는 API이고,<br>
 componentWillMount에서 하던 일들은 아래의 componentDidMount에서 처리 가능하다.<br>
+(UNSAFE_componentWillMount()로 수정하여 사용은 가능하다.)
 2. **componentDidMount**<br>
-Called immediately after a compoment is mounted.<br>
-Setting state here will trigger re-rendering.<br>
+Called immediately after a compoment is mounted. Setting state here will trigger re-rendering.<br>
 componentDidMount는 컴포넌트가 mounting된 직후 호출되는 API이다.<br>
-즉 화면에 나타나게 되었을 때 호출 되는 것이다.<br>
-ex>
-```
-componentDidMount(){
-  if (this.props.selectedEvent !== null){
-    this.setState({
-      event: this.props.selectedEvent
-      })
-    }
-  }
-  ```
-<br>
+이름처럼 해당 페이지에 모든 element들이 올바르게 render되면 이 메소드가 호출된다.<br>
+componentDidMount는 setState()메소드를 통해 state를 변경하고 <br>
+JSX에 업데이트된 데이터를 로드하는 render()를 호출하는 완벽한 장소이다. <br>
+
 
 # Props Updating와 State Updating<br><br>
 **Props Updating**<br>
@@ -62,7 +59,9 @@ console.log('next: ', nextProps.selectedEvent);
 ```
 <br>
 이 경우 브라우저에서 버튼을 클릭하면 현재의 이벤트와 다음에 나올 이벤트를 콘솔창에서 확인할 수 있다.<br>
-![ExampleImage1](https://github.com/WonjeongPark/whatIThink/blob/c06e409d811f0776acefdd56d860bda1c3ca6ef7/20190122_1.png?raw=true)<br>
+
+![ExampleImage1](https://github.com/WonjeongPark/whatIThink/blob/c06e409d811f0776acefdd56d860bda1c3ca6ef7/20190122_1.png?raw=true)
+
 <br>
 
 2. **shouldComponentUpdate**<br>
