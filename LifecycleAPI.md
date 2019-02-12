@@ -1,4 +1,4 @@
-## Lifecycle function<br>
+# Lifecycle function<br>
 React에는 **LifeCycle**이 존재한다.<br>
 생물도 아니고 무슨 LifeCycle인가 싶을 수 있지만,<br><br>
 _정확히는 React의 Component가 실행되거나(Mounting), 업데이트되거나(Updating), 제거될(Unmounting) 때<br>
@@ -8,7 +8,7 @@ _정확히는 React의 Component가 실행되거나(Mounting), 업데이트되�
 componentWillMount, componentWillUpdate, componentWillReceiveProps라는 Lifecycle API는 사용하지 않는다!(deprecated)`<br><br>
 ![ExampleImage2](https://github.com/WonjeongPark/whatIThink/blob/a2f558053e5a4061cf5a0117d613beecd37dd4f5/Lifecycle.jpeg?raw=true)
 <br><br>
-# Mount<br><br>
+## Mount<br><br>
 물론 앞서 컴포넌트가 새로 만들어 질 때 마다 호출되는 컴포넌트 생성자 함수 constructor가 존재한다.<br>
 ```
 constructor(props){
@@ -94,7 +94,7 @@ Mounting 후에 호출되는 componentDidMount안에 setState()가 존재하는 
 하나의 케이스에서 두번의 rendering이 일어난다면, 사용자는 중간 과정에서 사라진 state를 알 수 없다.<br>
 그렇게 때문에 대부분의 경우에서는 랜더링 전에 constructor()에서 해주는 것이 좋다.<br><br>
 
-# Props Updating와 State Updating<br><br>
+## Props Updating와 State Updating<br><br>
 **Props Updating**<br>
 Updating이 발생하면 이를 감지하는 과정에서 componentWillReceiveProps API가 실행된다.<br>
 이 후에는 shouldComponentUpdate, componentWillUpdate 순서로 호출되고 업데이트가 완료되면(->render)<br>
@@ -158,12 +158,27 @@ updating이 발생되고 즉시 호출되는 API로, 컴포넌트가 업데이�
 그 리턴 값을 세번째 파라미터 'snapshot'으로 받는다. 그렇지 않은 경우에는 snapshot의 값을 정의하지 않는다.<br>
 <br>
 
-# Unmount<br><br>
+## Unmount<br><br>
 컴포넌트가 제거되는 것을 UnMount라고 표현한다.<br>
 이를 위해 호출 되는 API는 componentwillUnmount이다. (componentDidUnmount는 없다.)<br>
 제거된 컴포넌트는 이벤트를 발생시키지 않으므로 주로 이벤트 리스너를 제거하거나<br>
 setTimeout을 clearTimeout을 통해 제거하는 등의 역할을 한다.<br>
 <br><br>
 
-## error
+## error<br><br>
+에러 발생시 componentDidCatch API가 유용하게 사용될 수 있다.<br>
+자식 컴포넌트에서 에러가 throw되는 경우 호출되고, error와 info라는 두 개의 파라미터를 가진다.<br>
+error는 throw된 에러이고, info는 에러를 throw한 컴포넌트의 핵심적인 정보에 관한 것이다.<br>
+```
+componentDidCatch(error, info) {
+  console.error(error, info);
+}
+```
+최상위 컴포넌트에 한 번만 넣어주면 된다.
+
+## 마무리
+<br><br>
+위에서 언급한 것 처럼 Lifecycle API를 이용해 개발자들은 컴포넌트를 컨트롤 한다.<br>
+따라서 구조적으로 잘 이해하고 필요한 사항을 알아두면<br>
+나중에 해결해야하는 문제가 있을 때 적재적소에 사용하면 된다.<br>
 
