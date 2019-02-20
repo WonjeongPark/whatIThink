@@ -110,7 +110,6 @@ updating이 발생되고 즉시 호출되는 API로, 컴포넌트가 업데이�
 **주의 할 점은** setState()와 사용시 무한 루프에 빠질 수 있으니 props를 비교하는 if조건문을 사용해서 감싸줘야한다.<br>
 또, getSnapshotBeforeUpdate의 lifecycle API가 실행되는 경우에는<br>
 그 리턴 값을 세번째 파라미터 'snapshot'으로 받는다. snapshot의 값은 null 혹은 특정한 값이 존재해야한다.<br>
-그렇지 않은 경우에는 snapshot의 값을 정의하지 않는다.<br>
 <br>
 
 ## Unmount<br><br>
