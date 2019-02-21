@@ -15,14 +15,19 @@ SPA는 말 그대로 1개의 페이지로 구성된 어플리케이션 형태이
 
 > 클라이언트에서 라우팅이 이루어진다.(<->서버)
 
-HTML처럼 전통적인 방식은 유저의 요청에 따라 그때 그때 새로 페이지를 로드하기 때문에<br>
-서버에서 파일을 제공하여 클라이언트 라우팅의 필요성이 없다면,<br>
-react에서는 모든 파일을 뿌려준 후이기 때문에<br>
-클라이언트 라우팅을 통해 가상으로 내부에서<br>
-각각의 주소마다 다른 컴포넌트를 보이게 하는 것이다.<br>
-서버쪽이 아닌 클라이언트쪽에서 라우팅이 이루어진다는 것은<br>
-엄청난 양의 정보가 생성되고 그에 따른 웹앱의 복잡도가 증가할 수록<br>
-불필요한 렌더링과 트래픽낭비를 방지하는데 도움이 될 것이다.<br>
+**HTML처럼 전통적인 방식**은 유저의 요청에 따라 그때 그때 새로 페이지를 로드하기 때문에<br>
+서버에서 파일을 제공하는 서버쪽 라우팅이라면<br><br>
+**react**에서는 모든 파일을 뿌려준 후<br>
+클라이언트 라우팅을 통해 가상으로 내부에서 각각의 주소마다 다른 컴포넌트를 보이게 하는 것이다.<br><br>
+작은 정보의 변화가 활발한 경우라면 클라이언트 라우팅이 적합하고<br>
+불필요한 렌더링과 트래픽낭비를 방지하는데 도움이 될 수 있다.<br>
+(반대로 서버에서 한번에 많은 양의 데이터를 받아와<br>
+라이언트 쪽에서는 읽기만 하는 경우에는 서버쪽 라우터가 적합하다.)<br>
+
+`하지만 개발자의 성향에 따라 다르기 때문에 정답은 없다.`<br>
+
+**클라이언트쪽 라우터 Ex) Facebook과 같은 사이트에 좋아요누르기, 댓글달기등의 경우<br>
+서버쪽의 라우터 Ex) 게시판의 게시글이나 많은 양의 글을 한꺼번에 받아오는 경우**<br>
 
 > React Router v3와 React Router v4
 
@@ -42,7 +47,7 @@ v3에서는 `browserHistory`에 저장하여 Router의 프로퍼티로 넣어줘
 v4에서는 `BrowserRouter`가 자체적으로 처리하기 때문에 위의 절차를 할 필요는 없다.<br>
 
 라우터가 아닌 컴포넌트에서 라우터의 객체 `history`를 포함한 `location`, `match`를 사용하려면 <br>
-Higher order component인 `withRouter`를 사용해야한다.<br><br>
+**Higher order component**인 `withRouter`를 사용해야한다.<br><br>
 ![withRouter1](https://github.com/WonjeongPark/whatIThink/blob/master/withRouter1.png?raw=true)
 <br>라우터가 아닌 NavBar에서 history props를 적용해 사용하고 싶다면<br><br>
 ![withRouter2](https://github.com/WonjeongPark/whatIThink/blob/4defdd4107a8fbed179a158a83ff04f15d709b6e/withRouter2.png?raw=true)
