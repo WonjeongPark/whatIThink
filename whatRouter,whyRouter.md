@@ -26,8 +26,8 @@ SPA는 말 그대로 1개의 페이지로 구성된 어플리케이션 형태이
 
 `하지만 개발자의 성향에 따라 다르기 때문에 정답은 없다.`<br>
 
-**클라이언트쪽 라우터 Ex) Facebook과 같은 사이트에 좋아요누르기, 댓글달기등의 경우<br>
-서버쪽의 라우터 Ex) 게시판의 게시글이나 많은 양의 글을 한꺼번에 받아오는 경우**<br>
+**클라이언트쪽 라우터 Ex) Facebook과 같은 사이트에 좋아요누르기, 댓글달기등의 일반적인 경우<br>
+서버쪽의 라우터 Ex) 게시판의 게시글이나 많은 양의 글을 한꺼번에 받아오는 일반적인 경우**<br>
 
 > React Router v3와 React Router v4
 
@@ -53,3 +53,29 @@ v4에서는 `BrowserRouter`가 자체적으로 처리하기 때문에 위의 절
 ![withRouter2](https://github.com/WonjeongPark/whatIThink/blob/4defdd4107a8fbed179a158a83ff04f15d709b6e/withRouter2.png?raw=true)
 <br>NavBar에 withRouter를 사용하면 된다.<br>
 적용방법은 조금씩 다르겠지만, withRouter의 역할이 이런 것이다고 이해하면 된다.<br>
+
+> 경로설정
+
+```
+<Route exact path="/" component={HOME}/>
+<Route path="/about" component={ABOUT}/>
+```
+
+경로 설정은 Route컴포넌트를 사용하고 path를 통해 경로위치를 설정한다.<br><br>
+HOME컴포넌트로 설정된 "/"와 ABOUT으로 설정된 "/about"을 볼 수 있다.<br>
+라우터 설정 후 HOME과 ABOUT등 '/'를 포함한 모든 컴포넌트가 보여지는 경우에는<br>
+HOME컴포넌트 경로에 exact를 추가하지 않은 경우이다.<br><br>
+`exact`를 포함시켜 '/'로 인해 중복매칭되는 오류를 조심해야한다.<br><br>
+
+다른 방법으로는 `switch`컴포넌트를 사용하는 방법니다.<br>
+예를 들어<br>
+```
+<Route path="/about:id" component={ABOUT}/>
+<Route path="/about" component={ABOUT}/>
+```
+id로 구분되는 ABOUT페이지를 불러오기 위한 라우터 설정이다.<br><br>
+여기서 발생하는 중복 문제는<br>
+두 가지 ABOUT 라우트를 `switch`로 감싸주면 가장 처음 매칭되는 라우트만 보여준다.<br><br>
+따라서 **id값을 입력하는 ABOUT라우트('/about:id')** 를 '/about' 보다 위에 적어서<br>
+id값이 있다면 id값에 따른 ABOUT컴포넌트를 우선적으로 보여지게 해야 한다.<br>
+
