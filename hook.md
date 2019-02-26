@@ -28,19 +28,19 @@ function Example(props) {
 }
 ```
 <br>
-Hook은 이러한 경우에서 state의 사용을 가능하게 하므로 **function component, 즉 함수형 컴포넌트라 부를 수 있다.**<br>
+Hook은 이러한 경우에서 state의 사용을 가능하게 하므로 __function component 즉 함수형 컴포넌트라 부를 수 있다.__<br>
 
 ## State Hook 그리고 Effect Hook
 
-### State Hook
+### State Hook (useState)
 
 > useState - 단일 상태 관리
 
 아주 간단한 Count 로직을 생각보자.<br>
-Class component가 필요하고, State도 {count:0}으로 시작해서 <br>
+Class component가 필요하고, State는 {count:0}으로 시작해서 <br>
 사용자가 버튼을 누를 때 마다 this.setState()가 호출되면서 state.count를 증가시킬 것이다.<br>
 count함수 자체보다, 하나의 API를 실행하는 과정으로 이해하면 쉽다.<br><br>
-React hook은 this가 없다. 함수형 component를 사용하고 this.state를 사용하지 않고 대신에 useState Hook을 사용해보자<br>
+React hook은 this가 없다. 함수형 component를 사용하고 this.state를 사용하지 않고 대신에 useState Hook을 사용한다<br>
 
 ```
 function countNumber(){
@@ -55,10 +55,10 @@ function countNumber(){
   }
   ```
   
-<br>아주 간단해 보인다.<br>
-여기서 기본값은 0이고, `usestate`를 호출하여 현재 state 값과 이 값을 설정해주는 함수를 파라미터로 가지는 배열을 반환한다.<br><br>
-위와 같이 count,setCount 대신 어떠한 이름이 들어가도 상관없다.<br>
-중요한건, useState는 class안에서 this.state와 동일한 기능을 하여, 보통 함수를 벗어나면 사라지는 변수들을 저장한다는 점이다.<br>
+<br>아주 간단해 보인다. 여기서 기본값은 0이고,<br>
+`usestate`를 호출하여 현재 state 값과 이 값을 설정하는 함수를 파라미터로 가지는 배열을 반환한다.<br><br>
+count,setCount 자리에 jelly, getJelly와 같이 어떠한 이름이 들어가도 상관없다.<br>
+중요한건, useState는 class안에서 this.state와 완벽히 동일한 기능을 한다는 것이다.<br><br>
 
 > useState - 다수 상태 관리
 
@@ -88,10 +88,63 @@ export default Form;
 
 ![20190225_1](https://github.com/WonjeongPark/whatIThink/blob/master/20190225_1.png?raw=true)
 
-이와 같이 State Hoo라고도 불리는 useState 함수를 호출하는 것으로<br>
+이와 같이 State Hook으로 불리는 useState 함수를 호출하는 것으로<br>
 다수의 state variables를 사용할 필요 없이 함수형 컴포넌트에 local state를 추가할 수 있고<br>
-this.setState와 달리 업데이트 되는 state variable의 값을 merging하는 것이 아니라 replacing한다.
+this.setState와 달리 업데이트 되는 state variable의 값을 merging하는 것이 아니라 replacing한다.<br>
 
-### Effect Hook
+### Effect Hook - useEffect
 
->
+> useEffect는 lifecycle(componentDidMount, componentDidUpdate, componentWillUnmount)을 결합한 기능을 한다.
+
+react에서 컴포넌트가 마운트 된 후(componentDidMount) 혹은 업데이트된 후(componentDidUpdate)<br>
+같은 작업을 구현하기 위해 중복된 코드를 작성하는 경우가 많다.<br>
+위의 useState 단일 상태관리에서 count로직을 다시 생각해 보자.<br>
+그 과정에서 count를 title로 출력하려면 componentDidMount와 componentDidUpdate를 각각 사용하여
+```
+  componentDidMount() {
+      document.title = `You clicked ${this.state.count} times`;
+    }
+
+  componentDidUpdate() {
+       document.title = `You clicked ${this.state.count} times`;
+    }
+```
+
+중복된 코드를 작성해야 할 것이다.<br>
+useEffect를 사용하면 각각의 시점에서 같은 작업을 구현해야 하는 것을 간결하게 처리할 수 있다.<br>
+Hook을 활용하여 useState를 import해서 작성하면서, useEffect도 import하여 이렇게 작성해보자.<br>
+
+```
+  useEffect(() => {
+    document.title = `You clicked ${count} times`;
+  });
+```
+
+useEffect를 활용할 때 기억해야 하는 사실은 **useEffect에서 나온 effect는 render할 때 마다 호출된다**는 것이다.<br>
+특정 상황에만 effect가 실행되게 하는 방법은 두번째 파라미터를 배열의 형태로 넘겨주면 된다.<br>
+
+`useEffect(() => func(), [count]);`
+
+특정 state, 위의 경우에서는 [count]가 변경된 경우에만 func()가 호출되고(componentDidUpdate의 기능)<br>
+빈 배열을 넘겨주면 componentDidMount가 동작하는 것처럼 기능한다.<br><br>
+
+그렇다면 componentWillUnmount의 기능은 어디에 있을까?<br>
+앞의 경우들은 clean up이 필요하지 않는 effect들을 구현한 것이지만 다른 경우도 존재한다.<br>
+외부데이터 소스를 구독하는 경우 메모리의 낭비를 막기 위해서 최종적으로 clean up이 필요하다.<br>
+일반적으로는 componentDidMount에 구독을 설정하고 componentWillUnmount에서 clean up 할 것이다.<br><br>
+useEffect에서는 componentWillUnmount처럼 그 시점에 한번만 호출 되는건 아니지만,<br>
+effect와 짝을 이뤄 hook의 cleanup함수가 다음 effect실행 전에 동작한다.<br><br>
+
+## Hook의 사용 규칙
+
+1. HOOK은 TOP LEVEL에서만 사용해야 한다.<br>
+
+component rendering 될 때 마다 같은 순서로 호출되는 것을 보장하기 위해<br>
+**반복문, 조건문 혹은 감싼 함수 내부에서는 사용하면 안된다.**
+
+2. React 함수에서만 HOOk 할 수 있다.<br>
+
+regular Javascript 함수에서는 HOOK을 호출하면 안된다.<br>
+React function component와 custom hook에서는 가능하다.
+
+>두 가지 규칙을 따르면 컴포넌트의 stateful logic을 source code에서 visible하게 유지할 수 있다. 
