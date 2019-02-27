@@ -176,13 +176,12 @@ effect와 짝을 이뤄 다음 effect실행 전에 동작한다.<br><br>
 
 1. HOOK은 TOP LEVEL에서만 사용해야 한다.<br>
 
-component rendering이 될 때 마다 같은 순서로 호출되는 것을 보장하기 위해<br>
-**반복문, 조건문 혹은 감싼 함수 내부에서는 사용하면 안된다.**
+**반복문, 조건문 혹은 감싼 함수 내부에서는 사용하면 안된다.**<br>
+component rendering이 될 때 마다 같은 순서로 호출되는 것을 보장하기 위함이다.<br>
 
 2. React 함수에서만 Hook 할 수 있다.<br>
 
 **regular Javascript 함수**에서는 HOOK을 호출하면 안된다.<br>
 React function component와 custom hook에서는 가능하다.<br>
 (custom hook이란 useState나 useEffect를 응용하여 다양한 hook을 만드는 것. 이미 많은 오픈소스가 존재한다.)
-
-><br>두 가지 규칙을 따르면 컴포넌트의 stateful logic을 source code에서 visible하게 유지할 수 있다.<br> 
+<br><br><br><br>
