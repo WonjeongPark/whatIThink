@@ -165,7 +165,7 @@ useEffect를 활용할 때 기억해야 하는 사실은 **useEffect에서 나�
 
 그렇다면 componentWillUnmount의 기능은 어디에 있을까?<br>
 앞의 경우들은 clean-up이 필요하지 않는 effect들을 구현한 것이지만 다른 경우도 존재한다.<br>
-예를 들면 외부데이터 소스를 구독하는 경우나 chatAPI 적용 시 등 메모리의 낭비를 막기 위한 경우이다.<br>
+예를 들면 외부데이터 소스를 받아오거나 chatAPI 적용하는 경우 등 메모리의 낭비를 막기 위한 경우이다.<br>
 일반적으로는 componentWillUnmount에서 clean-up 할 것이다.<br><br>
 
 useEffect에서는 function()에 return값이 존재한다면 그것을 hook의 cleanup함수로 인식한다.<br>
