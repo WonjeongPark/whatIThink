@@ -5,7 +5,7 @@
 >`Hook`이 나타난 배경<br>
 
 component에 속한 stateful logic이 재사용이 어렵고 <br>
-render props나 HOC로 대체해서 사용하는 방법 또한 <br>
+render props나 HOC(Higher Order Component)로 대체해서 사용하는 방법 또한 <br>
 사용한 코드를 재설계해야하는 번거로움과 코드가 복잡해지는 등 결과가 나타날 수 있다.<br>
 이런 종류의 문제를 해결하기 위하여 나온 개념이 `Hook`이다.<br><br>
 (render props = 값(value)이 함수인 prop을 사용해서 component간의 code를 공유하는 패턴)<br>
@@ -62,7 +62,7 @@ class Number extends React.Component {
 Class component가 필요하고, State는 {count}로 초기값 0으로 시작해서 <br>
 사용자가 버튼을 누를 때 마다 this.setState()가 호출되면서 count를 증가시킬 것이다.<br>
 count함수 자체보다, 하나의 API를 실행하는 과정으로 이해하면 쉽다.<br><br>
-React hook은 this가 없다. 함수형 component를 사용하고 this.state를 사용하지 않고 대신에 useState 사용한다<br>
+React hook은 this가 없다. 함수를 사용하고 this.state를 사용하지 않고 대신에 useState 사용한다<br>
 
 ```
 function Number(){
