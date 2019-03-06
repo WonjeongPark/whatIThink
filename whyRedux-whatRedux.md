@@ -16,7 +16,10 @@
 ## 그래서 Redux가 뭐지?
 
 ### MVC와  FLUX architecture 그리고 Redux.
-보편적으로 사용되었던 MVC패턴은 Model과 view가 다수 존재하는 경우 무한루프에 빠질 수 있다.<br>
+Controller, Model, View로 이루어진 MVC패턴은<br>
+action을 받은 Controller가 Model의 데이터를 받거나 업데이트하고 View에 반영한다.<br>
+View에서도 Model의 데이터에 접근이 가능하다.
+이런 MVC패턴은 Model과 view가 다수 존재하는 경우 관계파악이 힘들고 무한루프에 빠질 수 있다.<br>
 아래 사진에서 보면 MVC는 많아진 Model, view로 인해 무한루프가 어디인지 찾기 힘들 정도로 복잡하다.<br><br>
 ![MVCvsFLUX](https://github.com/WonjeongPark/whatIThink/blob/master/IMG/MVCvsFLUX.png?raw=true)
 <br><br>그런 MVC패턴의 한계를 해결하기 위해 나온 FLUX디자인이다.<br>
@@ -38,4 +41,32 @@ flux는 다수의 store를 사용하지만<br>
 
 ## Redux 원칙 3가지
 
-## Redux 적용
+Redux를 사용할 때 주의해야 할 3가지 원칙이 있다.<br>
+
+### 1. Single Source of Truth
+<br>Flux에서는 다수의 스토어를 사용하는 반면 **Redux는 하나의 스토어를 사용**하는 것을 권장한다.<br>
+**하나의 애플리케이션에 속한 모든 상태는 하나의 객체 트리 구조로 하나의 스토어 안에 저장된다.**<br>
+개발자의 성향에 따라 다르게 구현가능 하겠지만, 하나의 객체트리만 존재하기 때문에<br>
+상태를 바로 저장/불러오기를 하거나, 디버깅을 하거나, 실행취소/다시실행 구현하는 것이 쉽다.<br>
+개발도구로 잘 활용하기 위해서는 하나의 스토어를 사용하는 것이 좋다.<br><br>
+
+### 2. State is read-only
+<br>**State의 변경은 action 객체에 의해서만 발생한다.**<br>
+모든 action은 중첩되는 과정 없이 정해진 순서에 의해 dispatch되어 State에 어떤 변화가 일어나야 하는지 알려 준다.<br>
+즉 애플리케이션에서 뷰나 콜백 등으로 state를 직접 변경할 수 없다.<br>
+리덕스에서는 데이터의 변화를 감지할 때 재귀적으로 각 단계의 속성을 비교하지 않고 <br>
+shallow equality check로 간단하고 빠르게 두 객체를 비교하기 때문에 (a === b) **불변성**을 유지해야 하기 때문이다.<br><br>
+
+### 3. Changes are made with Pure Functions
+<br>State의 변화는 dispatch된 action에 의해서 일어나고 그 action을 받아서 처리하는 것이 reducer함수다.<br>
+reducer가 Pure function, 즉 **순수함수로 작성**되어야 액션에 의해 상태가 어떻게 변화하는 지 알 수 있다.<br>
+
+```
+1) reducer는 이전상태와 액션을 파라미터값으로 받아<br>
+2) 이 값에 의존하여
+3) 새로운 상태객체를 생성하여 return한다.<br>
+4) 같은 파라미터로 호출된 리듀서는 언제나 같은 값을 반환해야 한다.
+5) new Date(), Math.random() 등 결과 값이 항상 같지 않은 작업은 리덕스미들웨어에서 사용해야 한다.<br>
+```
+
+
