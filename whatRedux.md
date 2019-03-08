@@ -15,17 +15,11 @@
 
 ## 그래서 Redux가 뭐지?
 
-### MVC와  FLUX architecture 그리고 Redux.
-Controller, Model, View로 이루어진 MVC패턴은<br>
-action을 받은 Controller가 Model의 데이터를 받거나 업데이트하고 View에 반영한다.<br>
-View에서도 Model의 데이터에 접근이 가능하다.
-이런 MVC패턴은 Model과 view가 다수 존재하는 경우 관계파악이 힘들고 무한루프에 빠질 수 있다.<br>
-아래 사진에서 보면 MVC는 많아진 Model, view로 인해 무한루프가 어디인지 찾기 힘들 정도로 복잡하다.<br><br>
-![MVCvsFLUX](https://github.com/WonjeongPark/whatIThink/blob/master/IMG/MVCvsFLUX.png?raw=true)
-<br><br>그런 MVC패턴의 한계를 해결하기 위해 나온 FLUX디자인이다.<br>
-action이 발생하면 Dispatcher가 이를 받아 Store에 업데이트하고 변동사항은 View에 반영한다.<br>
+### FLUX architecture 그리고 Redux.
+
+FLUX디자인은 action이 발생하면 Dispatcher가 이를 받아 Store에 업데이트하고 변동사항은 View에 반영한다.<br>
 View에서도 action이 발생되어 Dispatcher로 보낼 수 있지만 이미 다른 action을 처리 중이라면 대기 처리 된다.<br><br>
-><br>이렇게 MVC의 단점을 보완한 FlUX를 조금 더 편하게 사용하게끔 하는 것이 Redux다<br><br>
+><br>이 FlUX를 조금 더 편하게 사용하게끔 하는 것이 Redux다<br><br>
 
 ## Redux
 flux는 다수의 store를 사용하지만<br>
