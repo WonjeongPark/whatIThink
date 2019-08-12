@@ -1,37 +1,9 @@
-## Welcome to GitHub Pages
+## 박쩨이의 생각하고 글쓰고 정리하는 공간
 
-You can use the [editor on GitHub](https://github.com/WonjeongPark/WhatTheHealth/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```
+코드를 잘 짜는 스킬도 중요하지만
+프로그래밍을, 개발하는 과정을 이해하는 것도 중요하다고 생각합니다.
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/WonjeongPark/WhatTheHealth/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+찾아보고 공부한 것을 정리하는 공간입니다.<br>
+상세하고 자세하게 모든 정보를 담지는 않지만 성장하는 만큼 덧붙여 채워나가는 중입니다.
