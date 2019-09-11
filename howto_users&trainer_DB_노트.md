@@ -53,7 +53,7 @@ loginID|loginPW|name|email|local|gender
 
 gym|career|bodypart|playerSource|count|Num
 ----------|----------|----------|----------|----------|----------
-로그인ID|비밀번호|이름|이메일|지역|성별
+헬스장|경력|목표부위|동영상소스|횟수|성별
 
 ### Trainee
 
