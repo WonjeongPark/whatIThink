@@ -2,8 +2,7 @@
 
 redux나 redux thunks, redux-saga에 관한 지식들은 검색해보면 많다.<br>
 나 또한 도대체 무엇인지 검색하고 많은 글을 읽었지만 이해가 쉽지 않았다.<br>
-아직도 redux관련 모든 지식을 아는 것은 아니지만<br>
-그래도 이것이 redux구나, 정확히는 redux-saga구나 느끼기 시작한 것은<br>
+아직도 redux관련 모든 지식을 아는 것은 아니지만 그래도 이것이 redux구나, 정확히는 redux-saga구나 느끼기 시작한 것은<br>
 작성된 코드를 보고 그간 읽었던 글 속의 지식들을 껴 맞춰보고 나서 인것 같다.<br>
 내가 이해한 의식의 흐름 순서대로 정리해본다.<br>
 
@@ -11,7 +10,7 @@ redux나 redux thunks, redux-saga에 관한 지식들은 검색해보면 많다.
 
 ## redux와 redux-thunks
 redux는 예전에 쓴 글에 언급했듯이<br>
-외부에 하나의 스토어두고 컴포넌트와 스토어 사이에 변경사항을 반영해주는 라이브러리이다!<br>
+**외부에 하나의 스토어두고 컴포넌트와 스토어 사이에 변경사항을 반영해주는 라이브러리**이다!<br>
 `redux-thunk`는 redux에서 사용하는 리덕스 미들웨어이고<br>
 여기서 `thunk`는 표현식을 감싸고 안에 있는 내용의 실행을 지연시킬 수 있는 함수이다.<br>
 ```
@@ -20,7 +19,7 @@ const a = 4+5; //바로 4+5가 되어 a = 9
 const thunkEx = () = 4+5; // thunk의 함수가 호출되어야 4+5가 실행된다. --> thunk함수
 ```
 
-<br>redux는 '사실'인 것만 반환하고<br>
+<br>redux는 '사실'인 것만 반환한다.<br>
 
 ```
 function fetchSecretSauce() {
@@ -54,8 +53,8 @@ function withdrawMoney(amout) {
 store.dispatch(withdrawMoney(100));
 ```
 
-<br>비동기처리뿐만 아니라, API호출이나 라우터 트렌지션 등을 처리할 때는 미들웨어인 Thunk를 사용해야 한다.<br><br>
-thunks는 선택적으로 몇가지 파라미터를 인수로 취하고 또 다른 함수를 반환하는 함수이다.<br>
+<br>비동기처리, API호출이나 라우터 트렌지션 등을 처리할 때는 미들웨어인 Thunk를 사용해야 한다.<br><br>
+redux-thunks는 선택적으로 몇가지 파라미터를 인수로 취하고 또 다른 함수를 반환한다.<br>
 내부함수로 dispatch와 getState함수를 사용하며 성공여부에 따라 Success(아래에선 sauce), failure(error)액션을 반환한다.<br>
 
 ```
@@ -101,7 +100,7 @@ function incrementAsync() {
     }
 }
 ```
-`Promise Chain`을 thunk의 반환값을 리턴하는 만큼 사용하는 것이 가능하다.
+`Promise Chain`을 사용하여 thunk의 반환값을 반환하는 과정을 제어한다.
 ```
 store.dispatch(
     makePizzaWithSecretSauce('My wife')
@@ -136,7 +135,6 @@ function* sendSaga() {
 
 <br>위의 간단한 예로 보면<br>
 sendSaga가 즉시 실행되고나서 SEND_REQUEST가 dispatcher되기 전까지 yield는 첫번째 줄에서 멈추고 후에 실행된다.<br><br>
-
 
 ```
 // './redux/user/actions.js'
@@ -186,26 +184,26 @@ export default function userReducer(state = {}, action) {
 ```
 
 ### redux, redux-thunk, redux-saga
-```사실만 반환하는 redux에 thunk를 사용하는 것으로 함수를 반환하고 성공여부에따라 액션을 전달했다
-또한 action에 응답을 할 수 없는 thunks 와 달리
-saga를 통해서는 특정 작업이 디스패치될 때 saga가 실행되도록 할 수 있다.
-```
+사실만 반환하는 redux에 thunk를 사용하는 것으로 함수를 반환하고 성공여부에따라 액션을 전달했다<br>
+또한 action에 응답을 할 수 없는 thunks 와 달리<br>
+saga를 통해서는 특정 작업이 디스패치될 때 saga가 실행되도록 할 수 있다.<br>
 
-## saga effect
 
-다음은 redux폴더에 속한 actions, reducer, saga의 예이다.<br>
+## saga helper
+
 `action`이 `reducer`에 `dispatch`되기 전 `saga`에서 다양한 `effect`를 이용해서 상황에 따른 행동을 정해주고,<br>
-그에 맞게 여러가지 작업들이 실행된다.<br><br>
+그에 맞게 여러가지 작업들이 실행된다.<br>
+`Effect`는 다시 말해서 어떤 행동을 취할지 정해주는 비동기처리를 위한 준비물이다.<br>
 
-위에서 언급한 `saga`에서 어떤 행동을 취할지 정해주는 것이 비동기처리를 하기 위한 준비물, `Effect`이다.<br>
-
->select: State로부터 필요한 데이터를 꺼낸다.
-put: Action을 dispatch한다.
-take: Action을 기다린다. 이벤트의 발생을 기다린다.
-call: Promise의 완료를 기다린다.
-fork: 다른 Task를 시작한다.
-join: 다른 Task의 종료를 기다린다.
-
+>select: State로부터 필요한 데이터를 꺼낸다.<br>
+put: Action을 dispatch한다.<br>
+take: Action을 기다린다. 이벤트의 발생을 기다린다.<br>
+call: Promise의 완료를 기다린다.<br>
+fork: 다른 Task를 시작한다.<br>
+join: 다른 Task의 종료를 기다린다.<br>
+takeEvery: 동시에 시작되는 여러 개의 fetchData instance들을 허용한다.<br>
+takeLatest: 가장 마지막에 발생된 request의 response를 얻고 싶다면 사용한다. <br>
 
 ## connect
-<내용추가><br>
+<내용추가>
+[참고](https://meetup.toast.com/posts/136)<br>
