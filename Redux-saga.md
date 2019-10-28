@@ -16,10 +16,10 @@ redux는 예전에 쓴 글에 언급했듯이<br>
 ```
 const a = 4+5; //바로 4+5가 되어 a = 9
 
-const thunkEx = () = 4+5; // thunk의 함수가 호출되어야 4+5가 실행된다. --> thunk함수
+const thunkEx = () = 4+5; // thunkEx 함수가 호출되어야 4+5가 실행된다. --> thunk함수
 ```
 
-<br>redux는 '사실'인 것만 반환한다.<br>
+### 미들웨어를사용하지 않은 redux는 '사실'인 것만 반환한다.<br>
 
 ```
 function fetchSecretSauce() {
@@ -53,9 +53,8 @@ function withdrawMoney(amout) {
 store.dispatch(withdrawMoney(100));
 ```
 
-<br>비동기처리, API호출이나 라우터 트렌지션 등을 처리할 때는 미들웨어인 Thunk를 사용해야 한다.<br><br>
-redux-thunks는 선택적으로 몇가지 파라미터를 인수로 취하고 또 다른 함수를 반환한다.<br>
-내부함수로 dispatch와 getState함수를 사용하며 성공여부에 따라 Success(아래에선 sauce), failure(error)액션을 반환한다.<br>
+### redux-thunks는 성공여부에 따라 Success(아래에선 sauce), failure(error)액션을 반환한다.
+선택적으로 몇 가지 파라미터를 인수로 취하고 또 다른 함수를 반환하고 내부함수로 dispatch와 getState함수를 사용한다.<br>
 
 ```
 function makePizzaWithSecretSauce(forPerson) {
@@ -64,13 +63,13 @@ function makePizzaWithSecretSauce(forPerson) {
     return function (dispatch) {
         return fetchSecretSauce().then(
             sauce => dispatch(makePizza(forPerson, sauce)),
-            error => dispatch(aplogize('The Sandwich Shop', forPerson, error))
+            error => dispatch(aplogize('The Pizza Shop', forPerson, error))
         );
     };
 }
 ```
 
-특정 조건이 만족되면 디스패치 하거나, 액션이 디스패치될 때 딜레이를 하는 기능이 있다.<br><br>
+특정 조건이 만족되면 디스패치 하거나, 액션이 디스패치될 때 딜레이를 하는 기능이 있다.<br>
 
 ```
 const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
@@ -100,7 +99,9 @@ function incrementAsync() {
     }
 }
 ```
-`Promise Chain`을 사용하여 thunk의 반환값을 반환하는 과정을 제어한다.
+
+<br>`Promise Chain`을 사용하여 thunk의 반환값을 반환하는 과정을 제어할 수 있다.<br>
+
 ```
 store.dispatch(
     makePizzaWithSecretSauce('My wife')
@@ -109,19 +110,20 @@ store.dispatch(
 })
 ```
 
-또한 다른 액션객체와 사용 가능하고 Promise로 반환가능하다.
+<br>또한 다른 액션객체와 사용 가능하고 Promise로 반환가능하다.<br><br>
 
-## Saga
-`redux-saga`도 미들웨어이다.<br>
-`action`을 비동기적으로 `dispatch`했을때 `saga`에서 어떤 행동을 취할지 정해주면 `reducer`로 전달된다.<br><br>
-`saga`는 `제네레이터(generator)`라고 불리는 함수로 구성된다.<br>
-`제네레이터(generator)`함수란 기본적으로 `yield`를 만날 때 마다 실행되거나 멈춰있거나 건너뛰며 진행된다.<br>
-`Thunks`는 `actio`n에 응답을 줄 수 없지만 `saga`에서는 `generator함수`에 의해<br>
-`store`를 구독하고 특정 작업이 디스패치 될 때 saga가 실행되도록 할수있다.<br>
-또한 `function*`과 같이 `별표`가 붙는 것이 특징이다.<br>
+## redux-Saga !! [참고](https://meetup.toast.com/posts/140)
+
+`제네레이터(generator)`함수는 `function*`과 같이 `별표`가 붙는 것이 특징이며<br>
+기본적으로 **`yield`를 만날 때 마다** 실행되거나 멈춰있거나 건너뛰며 진행된다.<br>
+제네레이터함수(=Callee)를 호출하고 위 과정처럼 내부 로직 제어를 하는 것이 Runner(Caller)이다.<br>
+redux-saga에서는 `saga`는 제네레이터함수 callee이고 Runner(caller)가 미들웨어인 셈이다.<br>
+
+제네레이터함수 = {`yield`+`이펙트생성자=명령`+(`이펙트=명령처리`)}로 이루어진다.<br>
+
 ```
 function* sendSaga() {
-  const action: SendMessageAction = yield take("SEND_REQUEST");
+  const action: SendMessageAction = yield take("SEND_REQUEST"); ****
   const { title, message } = aciton.payload;
   try {
     yield call(api.send, title, message);
@@ -134,66 +136,19 @@ function* sendSaga() {
 ```
 
 <br>위의 간단한 예로 보면<br>
-sendSaga가 즉시 실행되고나서 SEND_REQUEST가 dispatcher되기 전까지 yield는 첫번째 줄에서 멈추고 후에 실행된다.<br><br>
-
-```
-// './redux/user/actions.js'
-
-const actions = {
-  REQUEST_USER: "REQUEST_USER",
-  GET_USER: "GET_USER",
-  getUser: user => {
-    return { type: actions.REQUEST_USER, user };
-  }
-};
-export default actions;
-```
-
-```
-// './redux/user/saga.js'
-
-import actions from "./actions";
-import { all, takeEvery, put, fork } from "redux-saga/effects";
-import axios from "axios";
-import { endpoints } from "../../settings";
+sendSaga가 즉시 실행되고나서 SEND_REQUEST가 dispatcher되기 전까지 yield는 첫번째 줄에서 멈추고 후에 실행된다.<br>
 
 
-function* requestUser(action) {
-  let d = yield axios.post(endpoints.Userinfo, { user: action.user });
-  yield put({ type: actions.GET_USER, data: d.data });
-}
-
-export default function* rootSaga() {
-  yield takeEvery(actions.REQUEST_USER, requestUser);
-}
-```
-
-```
-// './redux/user/reducers.js'
-
-import actions from "./actions";
-
-export default function userReducer(state = {}, action) {
-  switch (action.type) {
-    case actions.GET_USER:
-      return { ...state, data: action.data };
-    default:
-      return state;
-  }
-}
-```
-
-### redux, redux-thunk, redux-saga
-사실만 반환하는 redux에 thunk를 사용하는 것으로 함수를 반환하고 성공여부에따라 액션을 전달했다<br>
-또한 action에 응답을 할 수 없는 thunks 와 달리<br>
-saga를 통해서는 특정 작업이 디스패치될 때 saga가 실행되도록 할 수 있다.<br>
+## redux, redux-thunk, redux-saga 간단비교!
+사실만 반환하는 redux, 그리고 thunk를 사용하는 것으로 함수를 반환하고 성공 여부에 따라 액션을 전달!<br>
+그러나 action에 응답을 할 수 없는 thunks, saga를 통해서는 특정 작업이 디스패치될 때 saga가 실행!<br>
 
 
-## saga helper
+## saga helper = 이펙트 생성자 
+`effect`는 미들웨어가 수행할 명령을 가진, call이나 put 등의 생성자를 통해 생성되는 JS객체이다.<br>
+`redus-saga`에서는 yield에 속한, 다양한 명령을 가진 `effect`들을 수행하는데,<br>
+effect에게 명령을 내리는 것, 즉 effect가 존재되어 실행가능하도록 하는 것이 `effect creator=이펙트 생성자`이다.<br>
 
-`action`이 `reducer`에 `dispatch`되기 전 `saga`에서 다양한 `effect`를 이용해서 상황에 따른 행동을 정해주고,<br>
-그에 맞게 여러가지 작업들이 실행된다.<br>
-`Effect`는 다시 말해서 어떤 행동을 취할지 정해주는 비동기처리를 위한 준비물이다.<br>
 
 >select: State로부터 필요한 데이터를 꺼낸다.<br>
 put: Action을 dispatch한다.<br>
