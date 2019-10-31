@@ -117,6 +117,25 @@ store.dispatch(
 
 `제네레이터(generator)`함수는 `function*`과 같이 `별표`가 붙는 것이 특징이며<br>
 기본적으로 **`yield`를 만날 때 마다** 실행되거나 멈춰있거나 건너뛰며 진행된다.<br>
+마치 Array의 기본 개념과 일맥상통한 것인데 간단한 예제로 대신한다.
+```
+function* getGenerator (){
+yield 10
+yield 20
+yield 30
+}
+---------------------------------------------------------------
+for(const num of getGenerator() ){
+console.log(num)
+}
+//getGenerator()의 자리에 var array = [10, 20, 30]이 들어가도 같은 결과일 것이다.
+---------------------------------------------------------------
+10
+20
+30
+```
+
+<br>redux-saga이야기로 돌아오면,<br>
 제네레이터함수(=Callee)를 호출하고 위 과정처럼 내부 로직 제어를 하는 것이 Runner(Caller)이다.<br>
 redux-saga에서는 `saga`는 제네레이터함수 callee이고 Runner(caller)가 미들웨어인 셈이다.<br>
 
