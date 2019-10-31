@@ -4,7 +4,7 @@ redux나 redux thunks, redux-saga에 관한 지식들은 검색해보면 많다.
 나 또한 도대체 무엇인지 검색하고 많은 글을 읽었지만 이해가 쉽지 않았다.<br>
 아직도 redux관련 모든 지식을 아는 것은 아니지만 그래도 이것이 redux구나, 정확히는 redux-saga구나 느끼기 시작한 것은<br>
 작성된 코드를 보고 그간 읽었던 글 속의 지식들을 껴 맞춰보고 나서 인것 같다.<br>
-이전에 redux에 대한 글을 썼지만 그때와 지금의 이해하는 것은 다르다. 아마 시간이 갈수록 더 다를 것이라 생각한다.<br>
+[이전에 redux에 대한 글](https://github.com/WonjeongPark/whatIThink/blob/master/whatRedux.md)을 썼지만 그때와 지금의 이해하는 것은 다르다. 아마 시간이 갈수록 더 다를 것이라 생각한다.<br>
 내가 이해한 의식의 흐름 순서대로 정리해본다.<br>
 
 ![redux](https://github.com/WonjeongPark/whatIThink/blob/master/IMG/redux.png?raw=true)
@@ -17,7 +17,7 @@ redux는 예전에 쓴 글에 언급했듯이<br>
 ```
 const a = 4+5; //바로 4+5가 되어 a = 9
 
-const thunkEx = () = 4+5; // thunkEx 함수가 호출되어야 4+5가 실행된다. --> thunk함수
+const thunkEx = () => 4+5; // thunkEx 함수가 호출되어야 4+5가 실행된다. --> thunk함수
 ```
 
 ### 미들웨어를사용하지 않은 redux는 '사실'인 것만 반환한다.<br>
@@ -100,8 +100,8 @@ function incrementAsync() {
     }
 }
 ```
-
-<br>`Promise Chain`을 사용하여 thunk의 반환값을 반환하는 과정을 제어할 수 있다.<br>
+코드에서 알 수 있듯이 redux thunk는 redux에서 비동기 개념이 포함된 것이다.<br>
+더불어 `Promise Chain`(ex. 을 사용하여 thunk의 반환값을 반환하는 과정을 제어할 수 있다.<br>
 
 ```
 store.dispatch(
@@ -142,7 +142,7 @@ sendSaga가 즉시 실행되고나서 SEND_REQUEST가 dispatcher되기 전까지
 
 ## redux, redux-thunk, redux-saga 간단비교!
 사실만 반환하는 redux, 그리고 thunk를 사용하는 것으로 함수를 반환하고 성공 여부에 따라 액션을 전달!<br>
-그러나 action에 응답을 할 수 없는 thunks, saga를 통해서는 특정 작업이 디스패치될 때 saga가 실행!<br>
+그러나 action에 응답을 할 수 없는 thunks, saga를 통해서는 액션에 응답을 하는 것으로 실행을 제어하고 saga가 실행!<br>
 
 
 ## saga helper = 이펙트 생성자 
@@ -160,9 +160,9 @@ fork: 다른 Task를 시작한다.<br>
 join: 다른 Task의 종료를 기다린다.<br>
 takeEvery: 동시에 시작되는 여러 개의 fetchData instance들을 허용한다.<br>
 takeLatest: 가장 마지막에 발생된 request의 response를 얻고 싶다면 사용한다. <br>
-이 외에도 많은 effect creators들이 존재하고 (이 곳)[https://redux-saga.js.org/docs/api/]을 참고하면 된다.<br>
+이 외에도 많은 effect creators들이 존재하고 [이 곳](https://redux-saga.js.org/docs/api/)을 참고하면 된다.<br>
 
-## connect (참고)[https://code.tutsplus.com/ko/tutorials/getting-started-with-redux-connecting-redux-with-react--cms-30352] (참고2)[https://velog.io/@velopert/Redux-3-%EB%A6%AC%EB%8D%95%EC%8A%A4%EB%A5%BC-%EB%A6%AC%EC%95%A1%ED%8A%B8%EC%99%80-%ED%95%A8%EA%BB%98-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-nvjltahf5e#connect-%ED%95%A8%EC%88%98%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EC%97%90-%EC%8A%A4%ED%86%A0%EC%96%B4-%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0]
+## connect [참고](https://code.tutsplus.com/ko/tutorials/getting-started-with-redux-connecting-redux-with-react--cms-30352) [참고2](https://velog.io/@velopert/Redux-3-%EB%A6%AC%EB%8D%95%EC%8A%A4%EB%A5%BC-%EB%A6%AC%EC%95%A1%ED%8A%B8%EC%99%80-%ED%95%A8%EA%BB%98-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-nvjltahf5e#connect-%ED%95%A8%EC%88%98%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EC%97%90-%EC%8A%A4%ED%86%A0%EC%96%B4-%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0)
 `redux`를 이용하여 `store`를 만든 후에 `react`와 어떻게 연결할 것인지를 생각해봐야한다.<br>
 우선 APP컴포넌트에 `<Provider />`를 사용하여 props에 store객체를 전달한다.<br>
 그리고 `store`에 `action`을 `dispatch`하고 state를 업데이트할 `component`에 `connect()`를 사용하고<br>
@@ -190,13 +190,17 @@ redux를 사용한다면 엄격한 규칙을 강제하는 것으로 데이터와
 사용자가 데이터의 변경이나 실행된 액션이 무엇인지 쉽게 알 수 있다. 따라서 디버깅도 수월할 것이다.<br>
 또한 적용 후에는 유지보수가 보다 간편할 수 있다.<br><br>
 
-그렇다면 redux는 필수일까?<br>
+**그렇다면 redux는 필수일까?**<br>
 감히 내가 이 것이 필수다, 그렇지 않다를 논하지 못하지만 그럼에도 이야기 할 수 있는 것은<br>
-처음 react를 공부하고 사용하면서부터 redux를 사용하지 않은 것이 잘한 일이라 느낀다는 것이다. <br>
-redux가 무엇인지 감도 못잡았을 시절<br>
-react하면 따라다니는 redux라는 개념(?)을 무조건 배워야 할 것 같다는 압박이 있었다.<br>
+**처음 react를 공부하고 사용하면서부터 redux를 사용하지 않은 것이 잘한 일이라 느낀다는 것이다.** <br>
+redux가 무엇인지 감도 못잡았을 시절 더불어 react라는 것도 버겁던 과거에<br>
+react하면 따라다니는 redux라는 개념(?)을 무조건 배워야 할 것 같다는 압박이 있었다.<br><br>
 결론적으로 멘토님의 조언으로 redux없이 howto를 만들었고(만들고 있고)<br>
-redux를 공부하고 사용하는 지금 howto개발 당시 redux를 사용하지 않은 것이 더 많은 도움이 되었다고 느끼기 때문이다. <br>
-firebase도 같은 맥락에서 howto에 적용하지 않은 것을 잘했다고 느끼지만 이에 관해 글 쓸날이 있을 것 같아 생략한다.<br><br>
+redux를 공부하고 사용하는 지금 howto개발 당시 redux를 사용하지 않은 것이 더 많은 도움이 되었다고 요새 많이 느낀다..<br>
+redux를 사용하지않고 번거롭더라도(?) 힘들더라도 순수 react로 상태관리를 하며 howto를 만들었기 때문에<br>
+지금 redux가 주는 편리함을 제대로 느낄 수 있는 것이라 생각한다.<br>
+또한 redux는 react에서 사용하는 일종의 도구인 것이지 react = redux 가 아니기 때문에 react에 대한 이해도도 많이 높아졌다고 생각한다.<br>
+firebase도 같은 맥락에서 howto에 적용하지 않은 것을 잘한 일이라 생각한다.<br><br>
 
-그래서 redux가 필수적이냐는 질문의 답은 없다!<br>
+그래서 redux가 필수적이냐는 질문의 답은...... 없다!<br>
+개인의 판단이고 취향이지만 적어도 react가 처음이라면 사용하지 않는 것을 추천한다!
