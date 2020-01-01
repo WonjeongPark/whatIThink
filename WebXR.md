@@ -1,4 +1,4 @@
-# XR
+# Web XR 구현을 위해 알면 좋은 지식들
 ## AR, VR, MR, XR
 
 ### VR, 가상현실(Virtual Reality)
